@@ -26,7 +26,10 @@ Before generating any code, analyze the target codebase:
 ```
 1. READ package.json
    → Detect framework (next, react, vue, svelte, astro, vanilla)
-   → Detect UI libraries (components.json, @radix-ui, @headlessui, shadcn patterns)
+   → Detect UI libraries:
+     • CHECK for components.json (shadcn/ui indicator)
+     • CHECK for @iconify/react or astro-icon (icon libraries)
+     • CHECK for @radix-ui, @headlessui (headless UI)
    → Detect styling (tailwindcss, styled-components, css modules)
    → CHECK tailwindcss version (v3 vs v4)
 
@@ -135,21 +138,36 @@ Figma frame "Hero CTA Button" → components/ui/ButtonHeroCta.tsx
 
 #### Scenario D: Design Token Conflict
 ```
-Action: STOP and ask user for decision
+Action: ⚠️ MANDATORY USER APPROVAL - NEVER proceed without explicit confirmation
+
+Behavior:
+1. STOP implementation immediately when discrepancy detected
+2. SHOW detailed comparison table of conflicting tokens
+3. WAIT for explicit user approval before ANY modification
+4. DO NOT assume which option the user prefers
 
 Example output:
 ┌─────────────────────────────────────────────────────┐
-│ ⚠️  DESIGN TOKEN CONFLICT                           │
+│ ⚠️  DESIGN TOKEN CONFLICT DETECTED                  │
 │                                                     │
 │ Token: border-radius                                │
 │ Figma value: 8px                                    │
 │ Codebase value: rounded-lg = 12px                   │
 │                                                     │
+│ ❌ Cannot proceed without your decision             │
+│                                                     │
 │ Options:                                            │
 │ 1. Update tailwind.config.js to match Figma        │
+│    (⚠️  Will affect ALL components using this token)│
 │ 2. Use inline override for this component only     │
+│    (Keeps existing token, component-specific value)│
 │ 3. Flag for designer review (keep codebase value)  │
+│    (Figma design may need adjustment)              │
+│                                                     │
+│ Please reply with: 1, 2, or 3                      │
 └─────────────────────────────────────────────────────┘
+
+CRITICAL: Never modify design tokens without explicit user confirmation.
 ```
 
 ### Phase 4: Code Generation

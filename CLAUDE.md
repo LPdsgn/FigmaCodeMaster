@@ -28,13 +28,45 @@ This plugin requires the Figma MCP Remote Server. Before using any command, ensu
 - Extract variables using `get_variable_defs` for colors, spacing, typography
 - Map Figma variables to CSS custom properties, Tailwind config (v3), or CSS theme (v4)
 - Never hardcode values that exist as design tokens
-- Report conflicts between Figma tokens and existing codebase tokens
+- ⚠️ **CRITICAL**: When design token conflicts are detected between Figma and codebase:
+  - STOP implementation immediately
+  - PRESENT detailed comparison to user
+  - WAIT for explicit user approval before making ANY modifications
+  - NEVER assume which value to use or modify tokens automatically
 
 ### 4. Component Strategy
 - **New**: Create following existing architecture patterns
 - **Match (>80%)**: Propose merge with existing component
 - **Different**: Create variant with descriptive name (e.g., `button-hero.tsx`)
 - **Conflict**: STOP and ask user for decision
+
+### 5. shadcn/ui Integration
+- When `components.json` is detected, project uses shadcn/ui
+- **ALWAYS prefer CLI installation** over manual component creation:
+  - Use `pnpm dlx shadcn@latest add <component>` or `npx shadcn@latest add <component>`
+  - DO NOT create shadcn/ui components manually
+- Reference https://ui.shadcn.com/llms.txt for component documentation and available components
+- Map Figma designs to shadcn/ui components when applicable
+
+### 6. Icon Library Detection
+- CHECK package.json for icon libraries before implementing icons
+- If `@iconify/react` is installed (React/Next.js):
+  - USE `<Icon icon="icon-name" />` from `@iconify/react`
+  - DO NOT create SVG components manually
+- If `astro-icon` is installed (Astro):
+  - USE `<Icon name="icon-name" />` from `astro-icon/components`
+- If no icon library is present, extract SVG from Figma or suggest installation
+
+### 7. User Approval for Structural Changes
+- ⚠️ **MANDATORY APPROVAL** required for:
+  - Updating design tokens in config files
+  - Overriding existing components
+  - Adding new dependencies
+  - Modifying shared utility functions
+  - Changing global CSS/theme files
+- ALWAYS show full impact analysis before requesting approval
+- PROVIDE option to see detailed diffs
+- NEVER make structural changes without explicit user confirmation
 
 ## Figma MCP Tools Usage
 
