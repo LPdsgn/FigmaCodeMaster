@@ -1,0 +1,46 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__figma__get_design_context",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[FigmaCodeMaster] Extracting design context from Figma...'"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__figma__get_variable_defs",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[FigmaCodeMaster] Extracting design tokens from Figma...'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[FigmaCodeMaster] File written: $CLAUDE_FILE_PATH'"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[FigmaCodeMaster] $CLAUDE_NOTIFICATION'"
+          }
+        ]
+      }
+    ]
+  }
+}

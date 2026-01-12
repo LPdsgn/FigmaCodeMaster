@@ -1,0 +1,84 @@
+{
+  "name": "figma-code-master",
+  "version": "1.0.0",
+  "description": "Convert Figma designs to pixel-perfect code with multi-framework support via Figma MCP",
+  "author": {
+    "name": "Boosha AI",
+    "url": "https://boosha.ai"
+  },
+  "keywords": [
+    "figma",
+    "design-to-code",
+    "mcp",
+    "react",
+    "vue",
+    "svelte",
+    "nextjs",
+    "tailwind",
+    "design-system",
+    "design-tokens"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boosha-ai/figma-code-master"
+  },
+  "engines": {
+    "claude-code": ">=1.0.0"
+  },
+  "commands": [
+    {
+      "name": "design-to-code",
+      "description": "Convert Figma design to code respecting codebase architecture",
+      "file": "../commands/design-to-code.md"
+    },
+    {
+      "name": "extract-tokens",
+      "description": "Extract design tokens from Figma",
+      "file": "../commands/extract-tokens.md"
+    },
+    {
+      "name": "validate-design",
+      "description": "Validate implementation against Figma design",
+      "file": "../commands/validate-design.md"
+    }
+  ],
+  "skills": [
+    {
+      "name": "figma-reader",
+      "description": "Extract design data from Figma via MCP",
+      "file": "../skills/figma-reader/SKILL.md"
+    },
+    {
+      "name": "framework-adapter",
+      "description": "Adapt implementation to target framework",
+      "file": "../skills/framework-adapter/SKILL.md"
+    }
+  ],
+  "agents": [
+    {
+      "name": "design-implementer",
+      "description": "Implement Figma designs respecting codebase architecture",
+      "file": "../agents/design-implementer.md"
+    },
+    {
+      "name": "design-validator",
+      "description": "Validate implementation fidelity vs Figma design",
+      "file": "../agents/design-validator.md"
+    },
+    {
+      "name": "token-extractor",
+      "description": "Extract and generate design token files",
+      "file": "../agents/token-extractor.md"
+    }
+  ],
+  "mcpServers": {
+    "figma": {
+      "url": "https://mcp.figma.com/mcp",
+      "type": "http",
+      "description": "Figma MCP Remote Server for design extraction"
+    }
+  },
+  "hooks": "../hooks/hooks.json",
+  "documentation": "../CLAUDE.md"
+}
