@@ -29,62 +29,83 @@ Before you begin, ensure you have the following installed:
 
 ## 📥 Installation
 
-This guide assumes you are installing the plugin from a local repository (e.g., distributed by your team).
+### Method 1️⃣ — Direct Installation from GitHub (Recommended)
 
-### Step 1️⃣ — Prepare the Plugin Directory
+This method installs the plugin directly from GitHub without manual cloning.
 
-Ensure you have the plugin files available locally.
-If you are cloning from a repository:
-
-```bash
-# Clone the plugin repository
-git clone https://github.com/boosha-ai/figma-code-master.git
-cd figma-code-master
-```
-
-### Step 2️⃣ — Configure Figma MCP Server (CRITICAL)
-
-This plugin relies on the Figma Model Context Protocol (MCP) server. Each team member must configure this **once** on their machine.
-
-**A. Add the Server**
-Run this command in your terminal to register the Figma MCP server with Claude Code:
-
-```bash
-claude mcp add --transport http figma https://mcp.figma.com/mcp
-```
-
-**B. Authenticate**
-1. Open Claude Code: `claude`
-2. Type `/mcp` and press Enter.
-3. Locate **figma** in the list.
-4. Select **Authenticate** (or ensure status is Connected).
-5. Follow the browser prompt to authorize Figma access.
-
-**C. Verify Connection**
-Run `/doctor` inside Claude Code or check `/mcp` again. You should see a green indicator next to "figma".
-
-### Step 3️⃣ — Install Plugin via Marketplace
-
-Add the local directory as a marketplace to Claude Code, then install the plugin. This ensures it's available globally across all your projects.
-
-1. **Add the Marketplace:**
+1. **Configure Figma MCP Server (one-time setup):**
    ```bash
-   # Replace /path/to/figma-code-master with the absolute path to where you cloned the repo
-   claude plugin marketplace add /path/to/figma-code-master
+   claude mcp add --transport http figma https://mcp.figma.com/mcp
    ```
-   *Expected output:* `Successfully added marketplace: figma-code-master`
 
-2. **Install the Plugin:**
-   ```bash
-   claude plugin install figma-code-master@figma-code-master
-   ```
-   *Expected output:* `Successfully installed plugin: figma-code-master@figma-code-master`
+2. **Authenticate with Figma:**
+   - Open Claude Code: `claude`
+   - Type `/mcp` and press Enter
+   - Locate **figma** in the list and select **Authenticate**
+   - Follow the browser prompt to authorize access
 
-3. **Verify Installation:**
+3. **Add the Marketplace and Install:**
    ```bash
-   claude plugin list
+   # Add the marketplace from GitHub
+   claude plugin marketplace add LPdsgn/FigmaCodeMaster
+   
+   # Install the plugin
+   claude plugin install figma-code-master@lpdsgn
    ```
-   You should see `figma-code-master` in the active plugins list.
+
+4. **Verify Installation:**
+   ```bash
+   # Check that the marketplace was added
+   claude plugin marketplace list
+   
+   # Then open Claude Code to verify the plugin
+   claude
+   # Inside Claude Code, type: /plugin
+   ```
+   ✅ You should see `lpdsgn` in the marketplace list and `figma-code-master` in the `/plugin` interface.
+
+---
+
+### Method 2️⃣ — Manual Installation from Cloned Repository
+
+Use this method if you want to modify the plugin or use a local version.
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/LPdsgn/FigmaCodeMaster.git
+   cd FigmaCodeMaster
+   ```
+
+2. **Configure Figma MCP Server (one-time setup):**
+   ```bash
+   claude mcp add --transport http figma https://mcp.figma.com/mcp
+   ```
+   Then authenticate via `/mcp` in Claude Code (see Method 1, step 2).
+
+3. **Add the Marketplace and Install:**
+   ```bash
+   # Windows
+   claude plugin marketplace add ./
+   
+   # Linux/Mac
+   claude plugin marketplace add ./
+   
+   # Install the plugin
+   claude plugin install figma-code-master@lpdsgn
+   ```
+
+4. **Verify Installation:**
+   ```bash
+   # Check that the marketplace was added
+   claude plugin marketplace list
+   
+   # Then open Claude Code to verify the plugin
+   claude
+   # Inside Claude Code, type: /plugin
+   ```
+   ✅ You should see `lpdsgn` in the marketplace list and `figma-code-master` in the `/plugin` interface.
+
+> **💡 Tip:** Run `/doctor` inside Claude Code to verify that the Figma MCP server is connected properly.
 
 ---
 
@@ -124,18 +145,28 @@ Once installed, usage is simple and works in any project directory.
 
 ## 🔄 Updating the Plugin
 
-To update to the latest version distributed by your team:
+To update to the latest version:
 
+**Method 1 (Direct from GitHub):**
 ```bash
-# 1. Pull latest changes
-cd figma-code-master
+# Update the marketplace
+claude plugin marketplace update lpdsgn
+
+# Update the plugin
+claude plugin update figma-code-master@lpdsgn
+```
+
+**Method 2 (Local Repository):**
+```bash
+# Pull latest changes
+cd FigmaCodeMaster
 git pull origin main
 
-# 2. Update the marketplace
-claude plugin marketplace update figma-code-master
+# Update the marketplace
+claude plugin marketplace update lpdsgn
 
-# 3. Update the plugin
-claude plugin update figma-code-master@figma-code-master
+# Update the plugin
+claude plugin update figma-code-master@lpdsgn
 ```
 
 ---
