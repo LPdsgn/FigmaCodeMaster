@@ -1,263 +1,176 @@
-# FigmaCodeMaster
+# 🚀 FigmaCodeMaster
 
-A Claude Code plugin that converts Figma designs to production-ready code with pixel-perfect fidelity and full respect for your existing codebase architecture.
+<div align="center">
 
-## Features
+![Figma Code Master](https://img.shields.io/badge/Figma-Code%20Master-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
+![Version](https://img.shields.io/badge/version-1.0.0-2E86AB?style=for-the-badge)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-D97757?style=for-the-badge)
 
-- **Design-to-Code Conversion**: Convert Figma frames to React, Vue, Svelte, or vanilla HTML
-- **Multi-Framework Support**: Automatic detection of Next.js, Nuxt, SvelteKit, Astro, and more
-- **Design Token Extraction**: Extract colors, spacing, typography, shadows as CSS variables or Tailwind config
-- **Codebase-Aware**: Respects existing component patterns, naming conventions, and design systems
-- **Validation**: Compare implemented code against Figma for pixel-perfect accuracy
-- **Smart Merging**: Intelligently merge with existing components or create variants
+**Convert Figma designs to production-ready code with pixel-perfect fidelity.**
 
-## Prerequisites
+[Prerequisites](#-prerequisites) • [Installation](#-installation) • [Usage](#-usage) • [Troubleshooting](#-troubleshooting)
 
-- [Claude Code](https://claude.com/claude-code) CLI installed
-- Figma account with access to the designs you want to convert
+</div>
 
-## Installation & Configuration (Permanent Installation)
+---
 
-Follow these steps to install the plugin and configure it for use across all your projects.
+## 📋 Prerequisites
 
-### 1. Install the Plugin
+Before you begin, ensure you have the following installed:
 
-Install the plugin globally using Claude Code's plugin manager. You can install it from a local directory or a Git repository.
+| Requirement | Verification Command | Note |
+|-------------|----------------------|------|
+| 🤖 **Claude Code** | `claude --version` | Must be version >= 1.0.33 |
+| 🐍 **Python** | `python3 --version` | 3.10+ (for utility scripts) |
+| 📦 **Node.js** | `node --version` | 18+ (for project analysis) |
+| 🎨 **Figma Account** | - | Access to the designs you want to convert |
 
-**From a Local Directory (if distributed via shared drive/repo):**
+---
+
+## 📥 Installation
+
+This guide assumes you are installing the plugin from a local repository (e.g., distributed by your team).
+
+### Step 1️⃣ — Prepare the Plugin Directory
+
+Ensure you have the plugin files available locally.
+If you are cloning from a repository:
+
 ```bash
-# Replace with the actual path to the plugin folder
-/plugin install /path/to/FigmaCodeMaster
+# Clone the plugin repository
+git clone https://github.com/boosha-ai/figma-code-master.git
+cd figma-code-master
 ```
 
-**Verify Installation:**
-Run `/plugin list` to confirm `figma-code-master` is active.
+### Step 2️⃣ — Configure Figma MCP Server (CRITICAL)
 
-### 2. Configure Figma MCP Server (Required)
+This plugin relies on the Figma Model Context Protocol (MCP) server. Each team member must configure this **once** on their machine.
 
-This plugin relies on the Figma Model Context Protocol (MCP) server. Each team member must configure this once on their machine.
-
-**Step A: Add the Server**
-Run the following command in your terminal to register the Figma MCP server with Claude Code:
+**A. Add the Server**
+Run this command in your terminal to register the Figma MCP server with Claude Code:
 
 ```bash
 claude mcp add --transport http figma https://mcp.figma.com/mcp
 ```
 
-**Step B: Authenticate**
-1. Open Claude Code (`claude`).
+**B. Authenticate**
+1. Open Claude Code: `claude`
 2. Type `/mcp` and press Enter.
 3. Locate **figma** in the list.
 4. Select **Authenticate** (or ensure status is Connected).
 5. Follow the browser prompt to authorize Figma access.
 
-**Step C: Verify Connection**
-Run `/doctor` or check `/mcp` again. You should see a green indicator next to "figma".
+**C. Verify Connection**
+Run `/doctor` inside Claude Code or check `/mcp` again. You should see a green indicator next to "figma".
 
-### 3. Usage in Projects
+### Step 3️⃣ — Install Plugin via Marketplace
 
-Once installed and configured, the plugin is available globally. You can use it in any project directory.
+Add the local directory as a marketplace to Claude Code, then install the plugin. This ensures it's available globally across all your projects.
 
-**Example Workflow:**
-1. Navigate to your project folder: `cd my-nextjs-app`
-2. Start Claude: `claude`
-3. Convert a design: `/figma-code-master:design-to-code https://figma.com/design/...`
+1. **Add the Marketplace:**
+   ```bash
+   # Replace /path/to/figma-code-master with the absolute path to where you cloned the repo
+   claude plugin marketplace add /path/to/figma-code-master
+   ```
+   *Expected output:* `Successfully added marketplace: figma-code-master`
 
-> **Note**: If you have a local version of the plugin in the current directory (e.g. for development), you can override the global installation by running `claude --plugin-dir .`
+2. **Install the Plugin:**
+   ```bash
+   claude plugin install figma-code-master@figma-code-master
+   ```
+   *Expected output:* `Successfully installed plugin: figma-code-master@figma-code-master`
 
-## Quick Start
-
-### 1. Connect to Figma MCP
-
-Run `/mcp` in Claude Code and authorize access to Figma when prompted.
-
-### 2. Convert a Design
-
-```bash
-# Convert a Figma frame to code
-/design-to-code https://figma.com/design/ABC123?node-id=1-234
-
-# Or specify a frame by name
-/design-to-code https://figma.com/file/ABC123 "Hero Section"
-```
-
-### 3. Extract Design Tokens
-
-```bash
-# Extract all design tokens from a Figma file
-/extract-tokens https://figma.com/file/ABC123
-
-# Extract only colors
-/extract-tokens https://figma.com/file/ABC123 --type colors
-```
-
-### 4. Validate Implementation
-
-```bash
-# Validate a component against its Figma source
-/validate-design components/ui/HeroSection.tsx
-```
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `/design-to-code` | Convert Figma designs to code |
-| `/extract-tokens` | Extract design tokens from Figma |
-| `/validate-design` | Validate implementation vs Figma |
-
-## Supported Frameworks
-
-The plugin auto-detects your framework from `package.json`:
-
-| Framework | UI Library | Styling |
-|-----------|------------|---------|
-| Next.js | shadcn/ui, Radix | Tailwind CSS |
-| React | Radix, Headless UI | Tailwind CSS, CSS Modules |
-| Vue/Nuxt | Nuxt UI, Headless UI | Tailwind CSS |
-| Svelte/Kit | Skeleton UI, Melt UI | Tailwind CSS |
-| Astro | Any (islands) | Tailwind CSS |
-| Vanilla | Alpine.js (optional) | Tailwind CSS, Plain CSS |
-
-## Workflow
-
-```
-                    +------------------+
-                    | /design-to-code  |
-                    +--------+---------+
-                             |
-              +--------------+--------------+
-              |                             |
-     +--------v--------+          +---------v--------+
-     | Analyze Figma   |          | Analyze Codebase |
-     | (via MCP)       |          | (framework, etc) |
-     +--------+--------+          +---------+--------+
-              |                             |
-              +--------------+--------------+
-                             |
-                    +--------v--------+
-                    | Component       |
-                    | Strategy        |
-                    +--------+--------+
-                             |
-         +-------------------+-------------------+
-         |                   |                   |
-+--------v------+   +--------v------+   +--------v------+
-| New Component |   | Merge with    |   | Create        |
-| (no match)    |   | Existing      |   | Variant       |
-+-------+-------+   +-------+-------+   +-------+-------+
-         |                   |                   |
-         +-------------------+-------------------+
-                             |
-                    +--------v--------+
-                    | Generate Code   |
-                    | + Tokens        |
-                    +--------+--------+
-                             |
-                    +--------v--------+
-                    | Offer           |
-                    | Validation      |
-                    +-----------------+
-```
-
-## Configuration
-
-### MCP Server
-
-The plugin uses Figma's official MCP Remote Server:
-
-```json
-// .mcp.json (auto-generated)
-{
-  "mcpServers": {
-    "figma": {
-      "url": "https://mcp.figma.com/mcp",
-      "type": "http"
-    }
-  }
-}
-```
-
-### Plugin Settings
-
-Settings are configured via `CLAUDE.md` in the plugin directory. Key settings:
-
-- Design token naming conventions
-- Component output directories
-- Validation tolerance (default: 2px)
-- Framework preferences
-
-## Figma MCP Tools Used
-
-| Tool | Purpose |
-|------|---------|
-| `get_design_context` | Extract structured design representation |
-| `get_variable_defs` | Extract design tokens (variables) |
-| `get_screenshot` | Visual reference for complex layouts |
-| `get_metadata` | Layer structure for large designs |
-| `get_code_connect_map` | Check existing component mappings |
-
-## Best Practices
-
-### In Figma
-
-1. **Use Variables**: Define colors, spacing, and typography as Figma Variables for clean token extraction
-2. **Name Frames**: Give frames descriptive names that map to component names
-3. **Use Auto Layout**: Auto Layout converts cleanly to Flexbox/Grid
-4. **Component Variants**: Define variants in Figma for automatic variant props
-
-### In Your Codebase
-
-1. **Consistent Structure**: Keep components in a predictable location (`components/ui/`, `src/components/`)
-2. **Use Design Tokens**: Define CSS variables or Tailwind config for colors/spacing
-3. **Type Components**: Use TypeScript for better prop inference
-
-## Validation Scoring
-
-When running `/validate-design`, components are scored on:
-
-| Category | Weight | Tolerance |
-|----------|--------|-----------|
-| Dimensions | 25% | ±2px pass, ±5px warn |
-| Colors | 25% | Exact match required |
-| Typography | 20% | Font-size ±1px |
-| Spacing | 20% | ±2px pass |
-| Token Usage | 10% | Must use tokens |
-
-## Troubleshooting
-
-### MCP Connection Issues
-
-```bash
-# Check MCP status
-/mcp
-
-# Reconnect if needed
-# Follow OAuth prompts
-```
-
-### Frame Not Found
-
-Ensure the Figma URL includes the node-id parameter:
-```
-https://figma.com/design/FILE_ID?node-id=NODE_ID
-```
-
-### Token Conflicts
-
-When Figma tokens conflict with existing codebase tokens, you'll be prompted to:
-1. Update to Figma value
-2. Keep existing value
-3. Create a new token
-
-## Contributing
-
-Contributions are welcome. Please open an issue first to discuss proposed changes.
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
+3. **Verify Installation:**
+   ```bash
+   claude plugin list
+   ```
+   You should see `figma-code-master` in the active plugins list.
 
 ---
 
-Built with Claude Code by [Boosha AI](https://boosha.ai)
+## 🎯 Usage
+
+Once installed, usage is simple and works in any project directory.
+
+### 1. Connect to Figma Designs
+
+1. Copy the link to a Figma frame or file.
+   *Ensure the link includes `?node-id=...` for specific frames.*
+
+2. Start Claude Code in your project folder:
+   ```bash
+   cd my-react-project
+   claude
+   ```
+
+### 2. Available Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/figma-code-master:design-to-code` | Convert a Figma frame to code | `/figma-code-master:design-to-code https://figma.com/...` |
+| `/figma-code-master:extract-tokens` | Extract design tokens (colors, fonts) | `/figma-code-master:extract-tokens https://figma.com/...` |
+| `/figma-code-master:validate-design` | Validate implementation vs Figma | `/figma-code-master:validate-design components/Hero.tsx` |
+
+> **Tip:** You can often just ask similarly in natural language: "Convert this design to code: [LINK]"
+
+### 3. Workflow Example
+
+1. **Analyze**: The plugin analyzes your `package.json` to detect Framework (Next.js, Vue, etc.) and styling (Tailwind v3 vs v4).
+2. **Extract**: It pulls design data, tokens, and screenshots from Figma via MCP.
+3. **Generate**: It creates component code that matches your existing project structure.
+4. **Validate**: Use `/validate-design` to check pixel accuracy.
+
+---
+
+## 🔄 Updating the Plugin
+
+To update to the latest version distributed by your team:
+
+```bash
+# 1. Pull latest changes
+cd figma-code-master
+git pull origin main
+
+# 2. Update the marketplace
+claude plugin marketplace update figma-code-master
+
+# 3. Update the plugin
+claude plugin update figma-code-master@figma-code-master
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### ❌ "MCP Server not connected"
+Run `/mcp` in Claude to check connection status. If disconnected, select it and choose **Reconnect**.
+
+### ❌ "Plugin not found"
+Verify the marketplace is added correctly:
+```bash
+claude plugin marketplace list
+```
+If missing, re-add it using the absolute path to the plugin folder.
+
+### ❌ "Token conflict" during generation
+If the plugin finds a conflict (e.g., Figma uses `blue-500` but your code uses a different hex for `blue-500`), it will pause and ask you for a decision.
+
+---
+
+## 📞 Support
+
+For issues or feature requests, please contact the maintainer or open an issue in the repository.
+
+---
+
+<div align="center">
+
+**FigmaCodeMaster v1.0.0**
+
+*January 2026*
+
+---
+
+Made with ❤️ by Boosha AI
+
+</div>

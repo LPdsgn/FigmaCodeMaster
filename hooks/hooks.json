@@ -18,15 +18,33 @@
             "command": "echo '[FigmaCodeMaster] Extracting design tokens from Figma...'"
           }
         ]
+      },
+      {
+        "matcher": "mcp__figma__get_screenshot",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[FigmaCodeMaster] Capturing visual reference...'"
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Write",
+        "matcher": "create_file",
         "hooks": [
           {
             "type": "command",
-            "command": "echo '[FigmaCodeMaster] File written: $CLAUDE_FILE_PATH'"
+            "command": "echo '[FigmaCodeMaster] File created: $CLAUDE_FILE_PATH'"
+          }
+        ]
+      },
+      {
+        "matcher": "replace_string_in_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[FigmaCodeMaster] File updated: $CLAUDE_FILE_PATH'"
           }
         ]
       }
